@@ -2,6 +2,13 @@ import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 public class StrLinkedList {
+
+    // Logger object for proper error logging
+    private final Logger logger = Logger.getLogger(StrLinkedList.class.getName());
+    private boolean debugging = false;
+    // The first node in the list
+    Node head;
+
     public static class Node{
 
         // The string being stored in this node
@@ -29,11 +36,6 @@ public class StrLinkedList {
         } // end string
 
     } // end class
-
-    // Logger object for proper error logging
-    private static final Logger logger = Logger.getLogger(StrLinkedList.class.getName());
-    // The first node in the list
-    Node head;
 
     /**
      * Constructs a new linked list to store string values
@@ -74,7 +76,7 @@ public class StrLinkedList {
 
     /**
      * Checks if this list contains the passed string value
-     * @param string The string to search for in this list
+     * @param string The string to search this list for
      * @return A boolean value that is true if the linked list contains
      * a node whose value is the same the passed string value
      */
@@ -83,14 +85,25 @@ public class StrLinkedList {
 
         // iterates through each list value returning true if a match is found
         while (current != null){
-
             if (current.value.equals(string))
                 return true;
+
             current = current.next;
 
         } // end while
 
         return false;
+
+    } // end boolean
+
+    /**
+     * Takes an integer value, converts it to a string and checks if this list contains the passed value
+     * @param value The value to search this list for
+     * @return A boolean value that is true if this linked list contains
+     * a node whose value is the same the passed value
+     */
+    public boolean hasValue(int value){
+        return hasValue(String.valueOf(value));
 
     } // end boolean
 
@@ -113,10 +126,10 @@ public class StrLinkedList {
             Node current = head;
 
             // iterates through each node until the desired index is reached, returning that nodes value
-            while (current != null) {
-
+            while (current != null){
                 if (i == index)
                     return current.value;
+
                 current = current.next;
                 i++;
 
@@ -124,7 +137,7 @@ public class StrLinkedList {
 
             return string;
 
-        } catch (Exception error) {
+        } catch (Exception error){
             logger.severe(error.getMessage());
             return null;
 
@@ -144,7 +157,7 @@ public class StrLinkedList {
             newNode.next = head;
         head = newNode;
 
-        System.out.println("Successfully added \"" + string + "\" to this list");
+        debug("Successfully added \"" + string + "\" to this list");
 
     } // end void
 
@@ -162,6 +175,15 @@ public class StrLinkedList {
     } // end void
 
     /**
+     * Takes an integer value, converts it to a string value and adds it to the head of this list
+     * @param value The integer value to be converted and added to this list
+     */
+    public void add(int value){
+        add(String.valueOf(value));
+
+    } // end void
+
+    /**
      * Removes the node containing the first found occurrence of the passed string value from this list
      * @param string The string value to remove the list
      */
@@ -172,7 +194,7 @@ public class StrLinkedList {
             if (!hasValue(string))
                 throw new NoSuchElementException("Failed to remove value \"" + string + "\", value not found!");
 
-            System.out.println("Removing value \"" + string + "\" from the StrLinkedList ...");
+            debug("Removing value \"" + string + "\" from the StrLinkedList ...");
 
             // cuts head off if value is contained in the head
             if (head.value.equals(string)) {
@@ -187,7 +209,6 @@ public class StrLinkedList {
 
             // iterates through the list until the value is found, then removes it
             while(current != null){
-
                 if(current.value.equals(string)) {
                     previous.next = current.next;
                     this.print();
@@ -201,10 +222,27 @@ public class StrLinkedList {
 
             } // end while
 
-        }  catch (Exception error) {
+        }  catch (Exception error){
             logger.severe(error.getMessage());
 
         } // end try
+
+    } // end void
+
+    /**
+     * Converts the passed integer value into a string, then removes the first found occurrence of it, if any exists
+     * @param value The integer value to convert to a string and remove from this list
+     */
+    public void remove(int value){
+        remove(String.valueOf(value));
+
+    } // end void
+
+    /**
+     * Clears all elements currently contained within this list
+     */
+    public void clear(){
+        head = null;
 
     } // end void
 
@@ -216,11 +254,11 @@ public class StrLinkedList {
     public String toString(){
         StringBuilder stringBuilder = new StringBuilder();
 
-        if (!isEmpty()) {
+        if (!isEmpty()){
             Node current = head;
 
             // for each node in the list, print its value, followed by the node it is pointing to
-            while (current != null) {
+            while (current != null){
                 stringBuilder.append(current.value).append(" -> ");
                 current = current.next;
 
@@ -239,6 +277,12 @@ public class StrLinkedList {
      */
     public void print(){
         System.out.println(this);
+
+    } // end void
+
+    public void debug(String msg){
+        if (debugging)
+            System.out.println(msg);
 
     } // end void
 
