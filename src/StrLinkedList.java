@@ -5,7 +5,7 @@ public class StrLinkedList {
     public static class Node{
 
         // The string being stored in this node
-        private String value;
+        private final String value;
         // The node that this node is pointing to
         private Node next;
 
