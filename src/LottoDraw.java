@@ -2,7 +2,6 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
-import java.util.logging.Logger;
 
 /**
  * This class simulates a lottery draw that generates a predefined amount of possible numbers,
@@ -121,7 +120,7 @@ public class LottoDraw {
             } // end for
 
             // updates the prize value based on the number of matches found
-            prizeValue = PRIZE_VALUES[matchCount][0];
+            prizeValue = PRIZE_VALUES[matchCount][1];
 
         } // end void
 
@@ -132,17 +131,17 @@ public class LottoDraw {
         public String getPrizeValue(){
             // adds appropriate separators for prize money integer value for a currency value appearance
             NumberFormat prizeMoney = NumberFormat.getInstance();
-            return String.format("$" + prizeMoney.format(prizeValue));
+            return String.format("$" + prizeMoney.format(prizeValue) + ".00");
 
         } // end int
 
         /**
-         *
-         * @return
+         * Gets this tickets numbers
+         * @return A string value containing each number on this ticket
          */
         @Override
         public String toString(){
-
+           return numbers.toString().replace("-> null","");
 
         } // end string
 
@@ -150,7 +149,7 @@ public class LottoDraw {
          * Prints information about this ticket (i.e., Prize money won + ticket numbers)
          */
         public void print(){
-            System.out.println("Prize won: " + getPrizeValue() + " Ticket: " + numbers.toString().replace("-> null",""));
+            System.out.println("Prize won: " + getPrizeValue() + " Ticket: " + this);
 
         } // end void
 
@@ -161,9 +160,12 @@ public class LottoDraw {
      */
     public static void main(String[] args){
         LottoDraw lottoDraw = new LottoDraw();
-        lottoDraw.generateWinningNumbers();
-        lottoDraw.generateLottoTickets();
-        lottoDraw.print();
+        lottoDraw.testJackpot(lottoDraw);
+//        lottoDraw = new LottoDraw();
+//        lottoDraw.generateWinningNumbers();
+//        lottoDraw.generateLottoTickets();
+//        lottoDraw.print();
+
     } // end void
 
     /**
@@ -192,13 +194,61 @@ public class LottoDraw {
     public void checkTickets(){
         totalSales = lottoTickets.size() * TICKET_PRICE;
 
+        System.out.println("Tickets bought:");
         // iterates through each lotto ticket in the lottoTickets hashmap to calculate the total prize money
         for(LottoTicket ticket : lottoTickets.values()){
             totalPrizeMoney += ticket.prizeValue;
+            ticket.print();
 
         } // end for
 
         totalProfit = totalSales - totalPrizeMoney;
+
+    } // end void
+
+    /**
+     * Displays each prize value to the console
+     * @return A string value containing each possible prize value
+     */
+    public String getPrizeValues(){
+        StringBuilder prizeValues = new StringBuilder();
+
+        for(int i = 0; i < PRIZE_VALUES.length; i++){
+            prizeValues.append(PRIZE_VALUES[i][1]);
+            if (i != PRIZE_VALUES.length - 1)
+                prizeValues.append(" -> ");
+
+        } // end for
+
+        return prizeValues.toString();
+
+    } // end void
+
+    public String formatCurrency(int value){
+        NumberFormat currency = NumberFormat.getCurrencyInstance();
+        return currency.format(value);
+
+    } // end string
+
+    /**
+     * Keeps repeating lotto draws until a jackpot is hit for testing purposes
+     */
+    private void testJackpot(LottoDraw lottoDraw){
+        int i = 0;
+        lottoDraw.generateWinningNumbers();
+
+        // keeps repeating lotto draws until jackpot is reached then returns the number of attemps it took
+        while (lottoDraw.totalPrizeMoney <= 1000) {
+            lottoDraw = new LottoDraw();
+            lottoDraw.generateWinningNumbers();
+            lottoDraw.generateLottoTickets();
+            lottoDraw.checkTickets();
+            i++;
+
+        } // end while
+
+        lottoDraw.print();
+        System.out.println("Draws taken to win jackpot: " + i);
 
     } // end void
 
@@ -211,13 +261,13 @@ public class LottoDraw {
 
         System.out.println("\nFull number list: " + lottoPool.toString().replace(" -> null", "")
                 + "\nWinning numbers: " + winningTicketNumbers.toString()
-                + "\nPrize money: " + totalPrizeMoney
+                + "\nPrize money: " + getPrizeValues()
                 + "\n");
         checkTickets();
         System.out.println("\nTotal tickets sold: " + lottoTickets.size()
-                + "\nTotal earnings: " + ("$" + currency.format(totalSales))
-                + "\nTotal prize money won: " + ("$" + currency.format(totalPrizeMoney))
-                + "\nTotal profit: " + ("$" + currency.format(totalProfit)));
+                + "\nTotal earnings: " + formatCurrency(totalSales)
+                + "\nTotal prize money won: " + formatCurrency(totalPrizeMoney)
+                + "\nTotal profit: " + formatCurrency(totalProfit));
         
     } // end void
 

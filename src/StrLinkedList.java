@@ -199,7 +199,7 @@ public class StrLinkedList {
             // cuts head off if value is contained in the head
             if (head.value.equals(string)) {
                 head = head.next;
-                print();
+                debug(this.toString());
                 return;
 
             } // end if
@@ -211,7 +211,7 @@ public class StrLinkedList {
             while(current != null){
                 if(current.value.equals(string)) {
                     previous.next = current.next;
-                    this.print();
+                    debug(this.toString());
                     return;
 
                 } // end if
