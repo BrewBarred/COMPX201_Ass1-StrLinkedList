@@ -167,6 +167,7 @@ public class StrLinkedList {
      * @param stringArray An array containing the values to add to the head of this list
      */
     public void add(String[] stringArray){
+        // individually adds each element of the passed string array to this str linked list
         for (String string : stringArray) {
             add(string);
 
@@ -257,7 +258,7 @@ public class StrLinkedList {
         if (!isEmpty()){
             Node current = head;
 
-            // for each node in the list, print its value, followed by the node it is pointing to
+            // for each node in the list, prirent its value, followed by the node it is pointing to
             while (current != null){
                 stringBuilder.append(current.value).append(" -> ");
                 current = current.next;

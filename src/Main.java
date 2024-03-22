@@ -20,15 +20,15 @@ public class Main {
         System.out.println("List length is: " + strList.getLength());
         System.out.println();
 
+        System.out.println("Removing value B...");
         strList.remove("B");
-        System.out.println();
-
+        strList.print();
+        System.out.println("Removing value A...");
         strList.remove("A");
-        System.out.println();
-
+        strList.print();
+        System.out.println("Removing value C...");
         strList.remove("C");
-        System.out.println();
-
+        strList.print();
         System.out.println("List length is: " + strList.getLength());
         System.out.println();
 
@@ -37,7 +37,9 @@ public class Main {
         strList.print();
         System.out.println();
 
+        System.out.println("Removing value B...");
         strList.remove("B");
+        strList.print();
         System.out.println();
 
         System.out.println("Retrieving value at position 0...");
