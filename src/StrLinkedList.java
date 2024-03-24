@@ -7,7 +7,7 @@ public class StrLinkedList {
     private final Logger logger = Logger.getLogger(StrLinkedList.class.getName());
     private boolean debugging = false;
     // The first node in the list
-    Node head;
+    Node head = null;
 
     public static class Node{
 
@@ -162,20 +162,6 @@ public class StrLinkedList {
     } // end void
 
     /**
-     * Creates a new node for each element in the passed string array and adds them to the head of this list
-     * @Note: The string values will be added in the order that they appear in the array, starting from index 0
-     * @param stringArray An array containing the values to add to the head of this list
-     */
-    public void add(String[] stringArray){
-        // individually adds each element of the passed string array to this str linked list
-        for (String string : stringArray) {
-            add(string);
-
-        } // end for
-
-    } // end void
-
-    /**
      * Takes an integer value, converts it to a string value and adds it to the head of this list
      * @param value The integer value to be converted and added to this list
      */
@@ -231,6 +217,16 @@ public class StrLinkedList {
     } // end void
 
     /**
+     * Removes and returns the first value (head) from this list
+     */
+    public String pop(){
+        Node head = this.head;
+        remove(this.head.value);
+        return head.value;
+
+    } // end void
+
+    /**
      * Converts the passed integer value into a string, then removes the first found occurrence of it, if any exists
      * @param value The integer value to convert to a string and remove from this list
      */
@@ -248,7 +244,7 @@ public class StrLinkedList {
     } // end void
 
     /**
-     * Constructs a detailed string of each node in this list
+     * Constructs a string out of each node in this list
      * @return A string value containing the nodes value and the node that it is pointing to
      */
     @Override
@@ -258,7 +254,7 @@ public class StrLinkedList {
         if (!isEmpty()){
             Node current = head;
 
-            // for each node in the list, prirent its value, followed by the node it is pointing to
+            // constructs a string out of each element in this linked list
             while (current != null){
                 stringBuilder.append(current.value).append(" -> ");
                 current = current.next;

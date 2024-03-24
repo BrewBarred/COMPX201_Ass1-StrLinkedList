@@ -37,6 +37,10 @@ public class LottoDraw {
      */
     final int TICKET_PRICE = 10;
     /**
+     * A list of all lotto tickets in this draw
+     */
+    private StrLinkedList lottoTickets;
+    /**
      * The prize value pool: The index = matchCount and the value at each index is its respective prize amount
      * (e.g., The value at index 0 is the amount of money you will get if you get 0 matches, and the value at
      * index 6 is the amount of money you will get if you get 6 matches)
@@ -53,11 +57,11 @@ public class LottoDraw {
     /**
      * The total revenue gained from sales
      */
-    private int totalSales = 0;
+    private int totalSaleAmount = 0;
     /**
      * The total prize money awarded from winning tickets
      */
-    private int totalPrizeMoney = 0;
+    private int totalPrizeAmount = 0;
     /**
      * The total profit made in sales after prize money was awarded
      */
@@ -90,6 +94,11 @@ public class LottoDraw {
          */
         public LottoTicket(){
             generateTicket();
+
+        } // end ticket
+
+        public LottoTicket(String ticketNumbers){
+            for
 
         } // end ticket
 
@@ -193,7 +202,7 @@ public class LottoDraw {
          * Prints information about this ticket (i.e., Prize money won + ticket numbers)
          */
         public void print(){
-            System.out.println("Prize won: " + getPrizeMoney() + " Ticket: " + this + " (" + matchCount + " winning numbers)");
+            System.out.println("Prize won: " + getPrizeMoney() + ", Ticket: " + this + " (" + matchCount + " winning numbers)");
 
         } // end void
 
@@ -245,8 +254,8 @@ public class LottoDraw {
             // ensures the prizes are actually winnable before continuing - this will only fail is the minimum matches is manually set higher than the lotto ticket size
             if (MIN_MATCHES > SIZE_LOTTO_TICKETS)
                 throw new UnsupportedOperationException(
-                        "Unable to generate a valid prize pool! The number of matches required to win is greater than the amount of numbers per ticket!\n"
-                                + " Matches required: " + MIN_MATCHES + ", Amount of numbers per ticket: " + SIZE_LOTTO_TICKETS);
+                        "Unable to generate a valid prize pool! The number of matches required to win is greater than the amount of numbers per ticket!"
+                        + "\n Matches required: " + MIN_MATCHES + ", Amount of numbers per ticket: " + SIZE_LOTTO_TICKETS);
 
             // generates prize pool values based on how many numbers each lotto
             // ticket has and the minimum number of matches required for a prize
@@ -284,7 +293,7 @@ public class LottoDraw {
     public void generateLottoTickets(){
         for(int i = 0; i < NUM_LOTTO_TICKETS; i++){
             LottoTicket ticket = new LottoTicket();
-            lottoTickets.add(ticket);
+            lottoTickets.add(ticket.toString());
 
         } // end for
 
@@ -294,19 +303,20 @@ public class LottoDraw {
      * Checks all tickets and calculates the total sale revenue, prize values and profit gained from this draw
      */
     public void checkTickets(){
-        totalSales = lottoTickets.size() * TICKET_PRICE;
+        totalSaleAmount = lottoTickets.getLength() * TICKET_PRICE;
 
         // iterates through each ticket in the lotto ticket list to calculate the total prize money
-        for(LottoTicket ticket : lottoTickets){
+        while(!lottoTickets.isEmpty()){
+            LottoTicket ticket = new LottoTicket(lottoTickets.pop());
             ticket.calcPrizeMoney();
             if (ticket.matchCount >= MIN_MATCHES) {
-                totalPrizeMoney += ticket.prizeMoney;
+                totalPrizeAmount += ticket.prizeMoney;
 
             } // end if
 
         } // end for
 
-        totalProfit = totalSales - totalPrizeMoney;
+        totalProfit = totalSaleAmount - totalPrizeAmount;
 
     } // end void
 
@@ -362,14 +372,13 @@ public class LottoDraw {
     public void print(){
         System.out.println("\nFull number list: " + LOTTO_POOL.toString().replace(" -> null", "")
                 + "\nWinning numbers: " + winningTicketNumbers.toString()
-                + "\nPrize money: " + getPrizeValues()
-                + "\n");
+                + "\nPrize money: " + getPrizeValues() + "\n");
 
         displayTickets();
 
         System.out.println("\nTotal tickets sold: " + lottoTickets.size()
-                + "\nTotal earnings: " + formatCurrency(totalSales)
-                + "\nTotal prize money won: " + formatCurrency(totalPrizeMoney)
+                + "\nTotal earnings: " + formatCurrency(totalSaleAmount)
+                + "\nTotal prize money won: " + formatCurrency(totalPrizeAmount)
                 + "\nTotal profit: " + formatCurrency(totalProfit));
         
     } // end void
@@ -384,7 +393,7 @@ public class LottoDraw {
         System.out.println("Testing jackpot odds... Please be patient as this may take a few minutes...");
 
         // keeps repeating lotto draws until a jackpot is hit
-        while (testDraw.totalPrizeMoney <= 10000) {
+        while (testDraw.totalPrizeAmount <= 10000) {
             testDraw.startDraw(testDraw);
             i++;
             // intermittently tracks iteration count to show user that the application is still working
