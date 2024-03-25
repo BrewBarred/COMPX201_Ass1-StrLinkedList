@@ -1,19 +1,24 @@
 import java.util.NoSuchElementException;
-import java.util.logging.Logger;
 
 public class StrLinkedList {
-
-    // Logger object for proper error logging
-    private final Logger logger = Logger.getLogger(StrLinkedList.class.getName());
-    private boolean debugging = false;
-    // The first node in the list
-    Node head = null;
+    /**
+     * Enables/disables debugging messages for developer testing - can only be toggled via hard coding.
+     */
+    final boolean debugging = false;
+    /**
+     * The first node in this list
+     */
+    Node head;
 
     public static class Node{
 
-        // The string being stored in this node
+        /**
+         * The string value that this node holds
+         */
         private final String value;
-        // The node that this node is pointing to
+        /**
+         * The node that this node is pointing to
+         */
         private Node next;
 
         /**
@@ -85,7 +90,7 @@ public class StrLinkedList {
 
         // iterates through each list value returning true if a match is found
         while (current != null){
-            if (current.value.equals(string))
+            if (current.value.equals(string.trim()))
                 return true;
 
             current = current.next;
@@ -93,17 +98,6 @@ public class StrLinkedList {
         } // end while
 
         return false;
-
-    } // end boolean
-
-    /**
-     * Takes an integer value, converts it to a string and checks if this list contains the passed value
-     * @param value The value to search this list for
-     * @return A boolean value that is true if this linked list contains
-     * a node whose value is the same the passed value
-     */
-    public boolean hasValue(int value){
-        return hasValue(String.valueOf(value));
 
     } // end boolean
 
@@ -118,8 +112,8 @@ public class StrLinkedList {
             if (getLength() == 0)
                 throw new IndexOutOfBoundsException("Unable to return ");
             if (index < 0 || index > getLength() - 1)
-                throw new IndexOutOfBoundsException("Failed to return value at index " + index + ", index was out of bounds!\n" +
-                        " Please ensure passed index value is between 0 and " + (getLength() - 1));
+                throw new IndexOutOfBoundsException("Failed to return value at index " + index + ", index was out of bounds! " +
+                        "Please ensure passed index value is between 0 and " + (getLength() - 1));
 
             int i = 0;
             String string = "";
@@ -137,8 +131,8 @@ public class StrLinkedList {
 
             return string;
 
-        } catch (Exception error){
-            logger.severe(error.getMessage());
+        } catch (Exception e){
+            e.printStackTrace();
             return null;
 
         } // end try
@@ -150,14 +144,15 @@ public class StrLinkedList {
      * @param string The value to add to the head of this list
      */
     public void add(String string){
-        Node newNode = new Node(string);
+        Node newNode = new Node(string.trim());
 
-        // if the head is not null, the new node should be pointing to it
+        // if the head is not null, attaches it to the new node
         if (head != null)
             newNode.next = head;
+
         head = newNode;
 
-        debug("Successfully added \"" + string + "\" to this list");
+        debug("Successfully added \"" + string + "\" to the head of this list");
 
     } // end void
 
@@ -209,29 +204,10 @@ public class StrLinkedList {
 
             } // end while
 
-        }  catch (Exception error){
-            logger.severe(error.getMessage());
+        }  catch (Exception e){
+            e.printStackTrace();
 
         } // end try
-
-    } // end void
-
-    /**
-     * Removes and returns the first value (head) from this list
-     */
-    public String pop(){
-        Node head = this.head;
-        remove(this.head.value);
-        return head.value;
-
-    } // end void
-
-    /**
-     * Converts the passed integer value into a string, then removes the first found occurrence of it, if any exists
-     * @param value The integer value to convert to a string and remove from this list
-     */
-    public void remove(int value){
-        remove(String.valueOf(value));
 
     } // end void
 

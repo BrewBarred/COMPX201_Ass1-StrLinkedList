@@ -20,6 +20,13 @@ public class Main {
         System.out.println("List length is: " + strList.getLength());
         System.out.println();
 
+        System.out.println("Retrieving value at position 0...");
+        System.out.println("The value at position 0: " + strList.getValueAt(0));
+        System.out.println();
+
+        System.out.println("Retrieving value at position 3...");
+        System.out.println("The value at position 3: " + strList.getValueAt(3));
+
         System.out.println("Removing value B...");
         strList.remove("B");
         strList.print();
@@ -32,22 +39,22 @@ public class Main {
         System.out.println("List length is: " + strList.getLength());
         System.out.println();
 
-        System.out.println("Adding values A, B, C, B, D to the StrLinkedList ...");
-        strList.add(new String[] {"A", "B", "C", "B", "D"});
-        strList.print();
-        System.out.println();
-
-        System.out.println("Removing value B...");
+        System.out.println("Attempting to remove a value from the empty list...");
+        System.out.println("Attempting to Remove value B...");
         strList.remove("B");
-        strList.print();
         System.out.println();
 
-        System.out.println("Retrieving value at position 0...");
-        System.out.println("The value at position 0: " + strList.getValueAt(0));
+        System.out.println("Attempting to remove a value that the list doesn't contain...");
         System.out.println();
-
-        System.out.println("Retrieving value at position 3...");
-        System.out.println("The value at position 3: " + strList.getValueAt(3));
+        System.out.println("List is empty: " + strList.isEmpty());
+        System.out.println("Adding value A...");
+        strList.add("A");
+        System.out.println("List contents: " + strList);
+        System.out.println("List size: " + strList.getLength());
+        System.out.println();
+        System.out.println("Attempting to Remove value B...");
+        strList.remove("B");
+        System.out.println();
 
     } // end main
 
